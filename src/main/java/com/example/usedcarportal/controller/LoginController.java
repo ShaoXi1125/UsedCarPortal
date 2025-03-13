@@ -1,5 +1,6 @@
 package com.example.usedcarportal.controller;
 
+import com.example.usedcarportal.entity.Role;
 import com.example.usedcarportal.entity.User;
 import com.example.usedcarportal.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -18,7 +19,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String showLoginForm() {
-        return "login"; // 返回 login.jsp
+        return "login";
     }
 
     @PostMapping("/login")
@@ -26,17 +27,25 @@ public class LoginController {
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = userService.login(username, password);
         if (user != null) {
-            session.setAttribute("user", user); // 登录成功，保存用户到 session
-            return "redirect:/"; // 重定向到首页
+            session.setAttribute("user", user);
+
+            if (user.getRole().equals(Role.ADMIN)) {
+                return "redirect:/admin/dashboard";
+            } else if (user.getRole().equals(Role.USER)) {
+                return "redirect:/";
+            } else {
+                return "redirect:/403";
+            }
+
         } else {
-            redirectAttributes.addFlashAttribute("error", "Invalid username or password!"); // 登录失败，显示错误
+            redirectAttributes.addFlashAttribute("error", "Invalid username or password!");
             return "redirect:/login";
         }
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); // 退出登录，清除 session
+        session.invalidate();
         return "redirect:/login";
     }
 }

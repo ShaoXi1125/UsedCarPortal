@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Used Car Sales - Home</title>
+    <title>Used Car Sales - Cars</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -13,10 +13,8 @@
             <a class="navbar-brand" href="/">Second-hand Car Sales</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/cars">Cars</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/contact">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/cars">Cars</a></li>
                 </ul>
                 <ul class="navbar-nav">
                     <c:if test="${empty sessionScope.user}">
@@ -33,10 +31,10 @@
     </nav>
 
     <div class="container mt-4">
-    
-        <p>Browse the following vehicles to find your favorite used car!</p>
-
-
+        <h1>Available Cars</h1>
+        <p>Browse all vehicles here!</p>
+        
+        <!-- 搜索表单 -->
         <form action="/search" method="get" class="row g-3 mb-4">
             <div class="col-md-3">
                 <input type="text" class="form-control" name="make" placeholder="Make (e.g., Toyota)">
@@ -57,7 +55,7 @@
                 <button type="submit" class="btn btn-primary w-100">Search</button>
             </div>
         </form>
-
+    
         <div class="row">
             <c:forEach var="car" items="${carList}">
                 <div class="col-md-4">
