@@ -6,6 +6,8 @@ import com.example.usedcarportal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -40,5 +42,21 @@ public class UserService {
         user.setRole("ADMIN".equalsIgnoreCase(role) ? Role.ADMIN : Role.USER);
 
         return userRepository.save(user);
+    }
+
+    public User updateProfile(Long userId, String newEmail, String newPassword) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            if (newEmail != null && !newEmail.isEmpty()) {
+                user.setEmail(newEmail);
+            }
+            if (newPassword != null && !newPassword.isEmpty()) {
+                user.setPassword(passwordEncoder.encode(newPassword));
+            }
+            return userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("User not found");
+        }
     }
 }

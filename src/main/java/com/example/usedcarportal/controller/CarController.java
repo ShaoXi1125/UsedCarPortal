@@ -59,7 +59,7 @@ public class CarController {
         return "redirect:/";
     }
 
-     @GetMapping("/car/{id}")
+    @GetMapping("/car/{id}")
     public String viewCarDetails(@PathVariable Long id, Model model) {
         Car car = carService.getCarById(id);
         if (car == null) {
@@ -67,5 +67,24 @@ public class CarController {
         }
         model.addAttribute("car", car);
         return "car_detail"; // 显示 car_detail.html 页面
+    }
+
+    @GetMapping("/car/deactivate/{id}")
+    public String deactivateCar(@PathVariable Long id, HttpSession session, RedirectAttributes redirectAttributes) {
+        User currentUser = (User) session.getAttribute("user");
+
+        if (currentUser == null) {
+            redirectAttributes.addFlashAttribute("error", "Login firstfirst！");
+            return "redirect:/login";
+        }
+
+        boolean success = carService.deactivateCar(id, currentUser);
+        if (success) {
+            redirectAttributes.addFlashAttribute("success", "车辆已成功下架！");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "无法下架该车辆！");
+        }
+
+        return "redirect:/my_cars";
     }
 }

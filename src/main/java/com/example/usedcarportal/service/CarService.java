@@ -1,6 +1,7 @@
 package com.example.usedcarportal.service;
 
 import com.example.usedcarportal.entity.Car;
+import com.example.usedcarportal.entity.User;
 import com.example.usedcarportal.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CarService {
@@ -43,5 +45,19 @@ public class CarService {
 
     public Car getCarById(Long id) {
         return carRepository.findById(id).orElse(null);
+    }
+
+    public boolean deactivateCar(Long carId, User user) {
+        Optional<Car> carOpt = carRepository.findById(carId);
+        if (carOpt.isPresent()) {
+            Car car = carOpt.get();
+            // 只有车主本人才能下架车辆
+            if (car.getOwner().getId().equals(user.getId())) {
+                car.setStatus(false); // 设为下架
+                carRepository.save(car);
+                return true;
+            }
+        }
+        return false;
     }
 }

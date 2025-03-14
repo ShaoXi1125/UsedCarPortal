@@ -83,6 +83,13 @@
                             <li class="list-group-item"><strong>Year:</strong> ${car.year}</li>
                             <li class="list-group-item"><strong>Price:</strong> RM ${car.price}</li>
                             <li class="list-group-item"><strong>Description:</strong> ${car.description}</li>
+                            <p><strong>Status:</strong> <c:if test="${car.status}">For Sale</c:if><c:if test="${!car.status}">Sold/Deactivated</c:if></p>
+
+                            <c:if test="${car.status}">
+                                <a href="/car/deactivate/${car.id}" onclick="return confirm('Are you sure you want to deactivate this car?');">
+                                    Deactivate
+                                </a>
+                            </c:if>
                         </ul>
                         <c:if test="${not empty sessionScope.user}">
                             <a href="/" class="btn btn-primary back-btn">Back to Home</a>
