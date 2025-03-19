@@ -14,23 +14,7 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Second-hand Car Sales</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/cars">Cars</a></li>
-                </ul>
-                <ul class="navbar-nav">
-                    <c:if test="${not empty sessionScope.user}">
-                        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
-                    </c:if>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <%@ include file="/WEB-INF/views/fragments/navbar.jsp" %>
 
     <div class="container mt-4">
         <div class="dashboard-container">
@@ -42,8 +26,30 @@
             </c:if>
             <div class="card mb-4">
                 <div class="card-body">
-                   
-                   
+                    <table border="1">
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                        </tr>
+                        <c:forEach var="user" items="${users}">
+                            <tr>
+                                <td>${user.id}</td>
+                                <td>${user.username}</td>
+                                <td>${user.email}</td>
+                                <td>${user.role}</td>
+                                <td>
+                                    <c:if test="${user.role != 'ADMIN'}">
+                                        <form action="/admin/set-admin" method="post">
+                                            <input type="hidden" name="userId" value="${user.id}">
+                                            <button type="submit">Make Admin</button>
+                                        </form>
+                                    </c:if>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
                 </div>
             </div>
         </div>

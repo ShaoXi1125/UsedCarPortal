@@ -13,7 +13,7 @@ public class HomeController {
     @Autowired
     private CarService carService;
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public String home(Model model) {
         model.addAttribute("carList", carService.getAllActiveCars());
         return "index";

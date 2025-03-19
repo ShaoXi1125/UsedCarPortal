@@ -5,8 +5,10 @@ import com.example.usedcarportal.entity.Role;
 import com.example.usedcarportal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -55,6 +57,22 @@ public class UserService {
                 user.setPassword(passwordEncoder.encode(newPassword));
             }
             return userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("User not found");
+        }
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Transactional
+    public void setUserAsAdmin(Long userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            user.setRole(Role.ADMIN);
+            userRepository.save(user);
         } else {
             throw new IllegalArgumentException("User not found");
         }

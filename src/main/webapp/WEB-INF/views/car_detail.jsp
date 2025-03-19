@@ -29,32 +29,7 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Second-hand Car Sales</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/cars">Cars</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/contact">Contact Us</a></li>
-                </ul>
-                <ul class="navbar-nav">
-                    <c:if test="${empty sessionScope.user}">
-                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                    </c:if>
-                    <c:if test="${not empty sessionScope.user}">
-                        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
-                        <c:if test="${sessionScope.user.role == 'ADMIN'}">
-                            <li class="nav-item"><a class="nav-link" href="/admin/dashboard">Admin Dashboard</a></li>
-                        </c:if>
-                    </c:if>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <%@ include file="/WEB-INF/views/fragments/navbar.jsp" %>
 
     <div class="container mt-4">
         <div class="car-details-container">
@@ -65,7 +40,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </c:if>
-            <c:if test="${not empty success}">
+            <c:if test="${not empty message}">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     ${success}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -84,14 +59,10 @@
                             <li class="list-group-item"><strong>Price:</strong> RM ${car.price}</li>
                             <li class="list-group-item"><strong>Description:</strong> ${car.description}</li>
                             <p><strong>Status:</strong> <c:if test="${car.status}">For Sale</c:if><c:if test="${!car.status}">Sold/Deactivated</c:if></p>
-
-                            <c:if test="${car.status}">
-                                <a href="/car/deactivate/${car.id}" onclick="return confirm('Are you sure you want to deactivate this car?');">
-                                    Deactivate
-                                </a>
-                            </c:if>
                         </ul>
+                        
                         <c:if test="${not empty sessionScope.user}">
+                            <a href="appointments/book/${car.id}" class="btn btn-success back-btn">Book a test drive</a>
                             <a href="/" class="btn btn-primary back-btn">Back to Home</a>
                         </c:if>
                         <c:if test="${empty sessionScope.user}">
