@@ -17,6 +17,9 @@
                     <c:when test="${sessionScope.user != null && sessionScope.user.role == 'ADMIN'}">
                         <!-- Admin 导航栏 -->
                         <li class="nav-item">
+                            <a class="nav-link" href="/admin/dashboard">User List</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="/admin/cars">Car List</a>
                         </li>
                         <li class="nav-item">

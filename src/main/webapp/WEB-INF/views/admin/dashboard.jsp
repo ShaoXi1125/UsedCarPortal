@@ -8,8 +8,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .dashboard-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
+        }
+        .table thead {
+            background-color: #007bff;
+            color: white;
         }
     </style>
 </head>
@@ -18,38 +22,46 @@
 
     <div class="container mt-4">
         <div class="dashboard-container">
-            <h2 class="text-center">Admin Dashboard</h2>
+            <h2 class="text-center mb-4">Admin Dashboard</h2>
             <c:if test="${not empty admin}">
-                <div class="alert alert-info">
-                    Welcome, ${admin.username}! You are logged in as an Admin.
+                <div class="alert alert-info text-center">
+                    Welcome, <strong>${admin.username}</strong>! You are logged in as an Admin.
                 </div>
             </c:if>
-            <div class="card mb-4">
+            <div class="card shadow">
                 <div class="card-body">
-                    <table border="1">
-                        <tr>
-                            <th>ID</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                        </tr>
-                        <c:forEach var="user" items="${users}">
-                            <tr>
-                                <td>${user.id}</td>
-                                <td>${user.username}</td>
-                                <td>${user.email}</td>
-                                <td>${user.role}</td>
-                                <td>
-                                    <c:if test="${user.role != 'ADMIN'}">
-                                        <form action="/admin/set-admin" method="post">
-                                            <input type="hidden" name="userId" value="${user.id}">
-                                            <button type="submit">Make Admin</button>
-                                        </form>
-                                    </c:if>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </table>
+                    <h4 class="mb-3">User Management</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="user" items="${users}">
+                                    <tr>
+                                        <td>${user.id}</td>
+                                        <td>${user.username}</td>
+                                        <td>${user.email}</td>
+                                        <td>${user.role}</td>
+                                        <td>
+                                            <c:if test="${user.role != 'ADMIN'}">
+                                                <form action="/admin/set-admin" method="post" class="d-inline">
+                                                    <input type="hidden" name="userId" value="${user.id}">
+                                                    <button type="submit" class="btn btn-sm btn-primary">Make Admin</button>
+                                                </form>
+                                            </c:if>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
